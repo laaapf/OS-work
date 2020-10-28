@@ -1,9 +1,9 @@
 from BlocoDeMemoria import BlocoDeMemoria
 from Processo import Processo
 class Memoria:
-    def __init__(self, listaDeBlocos, tamanhoAlocado, tamanhoMaximo):
-        self.listaDeBlocos = listaDeBlocos
-        self.tamanhoAlocado = tamanhoAlocado
+    def __init__(self, tamanhoMaximo):
+        self.listaDeBlocos = []
+        self.tamanhoAlocado = 0
         self.tamanhoMaximo = tamanhoMaximo
 
     def atualizaAlocacao(self):
