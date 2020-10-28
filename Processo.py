@@ -1,11 +1,11 @@
 class Processo(object):
-    def __init__(self, nome, estado, tempoProcesso, tempoProcessado, NImpressora, NDisco, tamanho):
+    def __init__(self, nome, tempoProcesso, nImpressora, nDisco, tamanho):
         self.nome = nome
         self.estado = "novo"
-        self.tempo_processo = tempo_processo
-        self.tempo_processado = 0
-        self.NImpressora = NImpressora
-        self.NDisco = NDisco
+        self.tempoProcesso = tempoProcesso
+        self.tempoProcessado = 0
+        self.nImpressora = nImpressora
+        self.nDisco = nDisco
         self.tamanho = tamanho
     
 
