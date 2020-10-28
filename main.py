@@ -8,6 +8,7 @@ arqEntradas.close()
 processosPrioritarios = []
 processosUsuario = []
 tempos = []
+nomes = []
 
 for tempo in arqLinhas:
     tempo = tempo.split(',')
@@ -21,9 +22,16 @@ for tempo in range(0,int(tempos[-1])+1):
 
 
 for processo in arqLinhas:
-    nome = ''.join(random.choice(string.ascii_lowercase) for i in range(10))
+    while(True):
+        nome = ''.join(random.choice(string.ascii_lowercase) for i in range(10))
+        if(len(nomes) == 0):
+            nomes.append(nome)
+            break
+        else:
+            if(nome not in nomes):
+                nomes.append(nome)
+                break
     novoProcesso = processo.rstrip('\n').split(',')
-    if(int(novoProcesso[1]) == 0):
-        processosPrioritarios[int(novoProcesso[0])].append(Processo(nome,novoProcesso[1],novoProcesso[2],novoProcesso[4],novoProcesso[5],novoProcesso[3]))
-    else:
-        processosUsuario[int(novoProcesso[0])].append(Processo(nome,novoProcesso[1],novoProcesso[2],novoProcesso[4],novoProcesso[5],novoProcesso[3]))
+    processosPrioritarios[int(novoProcesso[0])].append(Processo(nome,novoProcesso[1],novoProcesso[2],novoProcesso[4],novoProcesso[5],novoProcesso[3]))
+
+
