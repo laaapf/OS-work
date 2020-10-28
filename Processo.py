@@ -10,7 +10,7 @@ class Processo(object):
         self.tamanho = tamanho
 
     
-    def recursosDisponiveis(self, lPerifericos):
+    def recursosDisponiveis(self, lPerifericos,):
         impressoras = 0
         discos = 0
         for p in lPerifericos:
@@ -18,10 +18,13 @@ class Processo(object):
                 impressoras += 1
             if(p.tipo == "disco" and p.disponivel):
                 discos += 1
-        if(impressoras < self.nImpressora or discos < self.nDisco):
-            return False
-        else:
-            True
+        if(impressoras < self.nImpressora):
+            return "semImpressora"
+        else: 
+            if (discos < self.nDisco):
+                return "semDisco"
+            else:
+                return "pronto"
     def bloqueia(self):
         self.estado = "bloqueado"
 
