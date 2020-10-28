@@ -39,6 +39,10 @@ for processo in arqLinhas:
                 nomes.append(nome)
                 break
     novoProcesso = processo.rstrip('\n').split(',')
+    if(novoProcesso[1] == 0):
+        novoProcesso[1] = True
+    else:
+        novoProcesso[1] = False
     filaChegada[int(novoProcesso[0])].append(Processo(nome,novoProcesso[1],novoProcesso[2],novoProcesso[4],novoProcesso[5],novoProcesso[3]))
 
 lPerifericos.append(Periferico(True,"impressora"))
