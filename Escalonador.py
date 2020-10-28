@@ -29,4 +29,5 @@ class Escalonador(object):
                         p = self.filaPronto.pop()
                 else:
                     continue
+    
 
