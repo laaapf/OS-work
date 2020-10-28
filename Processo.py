@@ -36,3 +36,8 @@ class Processo(object):
         estadoAntigo = self.estado
         self.estado = "pronto"   
         print("\tProcesso {}   Estado {} --> Pronto".format(self.nome, estadoAntigo))
+
+    def termina(self):
+        estadoAntigo = self.estado
+        self.estado = "terminado"   
+        print("\tProcesso {}   Estado {} --> Terminado".format(self.nome, estadoAntigo))

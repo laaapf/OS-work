@@ -39,11 +39,11 @@ for processo in arqLinhas:
                 nomes.append(nome)
                 break
     novoProcesso = processo.rstrip('\n').split(',')
-    if(novoProcesso[1] == 0):
+    if(int(novoProcesso[1]) == 0):
         novoProcesso[1] = True
     else:
         novoProcesso[1] = False
-    filaChegada[int(novoProcesso[0])].append(Processo(nome,novoProcesso[1],novoProcesso[2],novoProcesso[4],novoProcesso[5],novoProcesso[3]))
+    filaChegada[int(novoProcesso[0])].append(Processo(nome,novoProcesso[1],int(novoProcesso[2]),int(novoProcesso[4]),int(novoProcesso[5]),int(novoProcesso[3])))
 
 lPerifericos.append(Periferico(True,"impressora"))
 lPerifericos.append(Periferico(True,"impressora"))
@@ -51,18 +51,51 @@ lPerifericos.append(Periferico(True,"disco"))
 lPerifericos.append(Periferico(True,"disco"))
 
 for tempoAtual in range(len(filaChegada)):
+    emMemoria = []
     if(len(filaChegada[tempoAtual]) > 0): 
         print("TEMPO {}:".format(tempoAtual))
         print("---------------------------------------------Novos Processos------------------------------------------------")
         for processoChegando in filaChegada[tempoAtual]:
-            print(processoChegando)
-            print()
+            if(memoria.firstFit(processoChegando)): #quando tem espaço
+                memoria.atualizaAlocacao()
+                emMemoria.append(processoChegando)
+                print(processoChegando)
+                print()
+            else: #quando não tem
+                if(tempoAtual+1 == len(filaChegada)):
+                    filaChegada.append([])
+                filaChegada[tempoAtual+1].insert(0,processoChegando)
         print("------------------------------------------------------------------------------------------------------------")
     else:
         print("TEMPO {}: \n\tNão chegaram novos processos!!!".format(tempoAtual))
+    escalonador.att_pronto(emMemoria,lPerifericos)
+    if(len(escalonador.filaPronto)!=0):
+        escalonador.executa(lPerifericos)
+    escalonador.retiraProcesso(memoria)
 
+vazio = False
+for cpu in escalonador.cpus:
+    if(cpu.processo != None):
+        vazio = True
+        break
+if(len(escalonador.filaPronto)!=0) : vazio=False
+else: vazio=True
+
+while not vazio:
+    for cpu in escalonador.cpus:
+        if(cpu.processo != None):
+            vazio = True
+            break
+    if(len(escalonador.filaPronto)!=0) : vazio=False
+    else: vazio=True
     
-
+    tempoAtual += 1
+    print("TEMPO {}: \n\tNão chegaram novos processos!!!".format(tempoAtual))
+    escalonador.att_pronto(emMemoria,lPerifericos)
+    escalonador.executa(lPerifericos)
+    escalonador.retiraProcesso(memoria)
     # print("---------------------------------------------Mudanças de Estado---------------------------------------------")
     # filaChegada[12][0].bloqueia()
     # print("------------------------------------------------------------------------------------------------------------")
+
+print("------------------------------------------------Fim da Execução------------------------------------------------")
