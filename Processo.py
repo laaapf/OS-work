@@ -8,7 +8,17 @@ class Processo(object):
         self.nDisco = nDisco
         self.tamanho = tamanho
     
-
-
+    def recursosDisponiveis(self, lPerifericos):
+        impressoras = 0
+        discos = 0
+        for p in lPerifericos:
+            if(p.tipo == "impressora" and p.disponivel):
+                impressoras += 1
+            if(p.tipo == "disco" and p.disponivel):
+                discos += 1
+        if(impressoras < self.nImpressora or discos < self.nDisco):
+            return False
+        else:
+            True
     
         
