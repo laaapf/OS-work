@@ -30,4 +30,20 @@ class Escalonador(object):
                 else:
                     continue
     
+    def att_pronto(self, processos, lPerifericos):
+        for p in processos:
+            self.filaPronto.append(p)
+        for i in lPerifericos:
+            if i.disponivel:
+                if i.tipo == "disco":
+                    while len(self.filaSusDisco) != 0:
+                        self.filaPronto.insert(0, self.filaSusDisco.pop())
+                elif i.tipo == "impressora":
+                    while len(self.filaSusImpressora) != 0:
+                        self.filaPronto.insert(0, self.filaSusImpressora.pop())
+            
+        
+            
+
+
 
