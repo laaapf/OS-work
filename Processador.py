@@ -5,5 +5,5 @@ class Processador:
     def getProcesso(self):
         return self.processo
 
-    def contadorTempo(self):
+    def processa(self):
         self.processo.tempoProcessado += 1
