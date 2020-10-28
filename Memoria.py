@@ -1,4 +1,5 @@
 from BlocoDeMemoria import BlocoDeMemoria
+from Processo import Processo
 class Memoria:
     def __init__(self, listaDeBlocos, tamanhoAlocado, tamanhoMaximo):
         self.listaDeBlocos = listaDeBlocos
@@ -30,7 +31,7 @@ class Memoria:
             return True
         else:
             return False
-            
+
     def garbageCollector(self):
         for b in self.listaDeBlocos:
             if(b.livre):
