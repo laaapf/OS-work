@@ -31,3 +31,11 @@ class Escalonador(object):
                     continue
     
 
+    def retiraProcesso(self, cpus):
+        for cpu in cpus:
+            if(cpu.processo.tempoProcessado == cpu.processo.tempoProcesso):
+                cpu.processo = None
+                continue
+            if((cpu.processo.tempoProcessado % 2) == 0):
+                cpu.processo = None
+                continue
