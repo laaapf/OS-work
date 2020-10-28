@@ -9,6 +9,8 @@ class Processo(object):
         self.nDisco = nDisco
         self.tamanho = tamanho
 
+    def __str__(self):
+        return "\tProcesso {}   Estado {}   Prioridade {}\n\tTamanho do Processo:{}Mbytes\n\tProcessado:{}/{}".format(self.nome, self.estado, self.prioridade, self.tamanho, self.tempoProcessado, self.tempoProcesso)
     
     def recursosDisponiveis(self, lPerifericos,):
         impressoras = 0
@@ -26,11 +28,11 @@ class Processo(object):
             else:
                 return "pronto"
     def bloqueia(self):
+        estadoAntigo = self.estado
         self.estado = "bloqueado"
+        print("\tProcesso {}   Estado {} --> Bloqueado".format(self.nome, estadoAntigo))
 
     def apronta(self):
-        self.estado = "pronto"    
-
-
-    
-        
+        estadoAntigo = self.estado
+        self.estado = "pronto"   
+        print("\tProcesso {}   Estado {} --> Pronto".format(self.nome, estadoAntigo))
