@@ -27,6 +27,7 @@ class Processo(object):
                 return "semDisco"
             else:
                 return "pronto"
+                
     def bloqueia(self):
         estadoAntigo = self.estado
         self.estado = "bloqueado"

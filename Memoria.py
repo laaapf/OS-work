@@ -38,7 +38,7 @@ class Memoria:
                 self.listaDeBlocos.remove()
         self.atualizaAlocacao()
         
-    def liberaBloco(processo):
+    def liberaBloco(self,processo):
         for bloco in self.listaDeBlocos:
             if(bloco.processo == processo):
                 bloco.livre = True
