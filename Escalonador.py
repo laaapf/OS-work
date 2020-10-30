@@ -5,7 +5,7 @@ class Escalonador(object):
         self.filaSusDisco = []
         self.cpus = cpus
 
-    def retiraPronto(self, lPerifericos): #manda de pronto ao processador ou para bloqueado
+    def saidaPronto(self, lPerifericos): #manda de pronto ao processador ou para bloqueado
         for cpu in self.cpus:   #percorrer as cpus
             if (cpu.processo != None): #caso a cpu esteja ocupada
                 continue
@@ -78,7 +78,7 @@ class Escalonador(object):
     #             else:
     #                 continue
     
-    def att_pronto(self, processos, lPerifericos):
+    def entradaPronto(self, processos, lPerifericos):
         for p in processos:
             self.filaPronto.append(p)
         for i in lPerifericos:

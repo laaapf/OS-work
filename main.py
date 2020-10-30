@@ -74,8 +74,8 @@ while True:
         print("------------------------------------------------------------------------------------------------------------")
     else:
         print("TEMPO {}: \n\tNão chegaram novos processos!!!".format(tempoAtual))
-    escalonador.att_pronto(emMemoria,lPerifericos)
-    escalonador.retiraPronto(lPerifericos)
+    escalonador.entradaPronto(emMemoria,lPerifericos)
+    escalonador.saidaPronto(lPerifericos)
     reportCpuInicio = ""
     reportCpuFinal = ""
     for cpu in escalonador.cpus:
@@ -103,8 +103,8 @@ emMemoria = []
 while not vazio:
     tempoAtual += 1
     print("TEMPO {}: \n\tNão chegaram novos processos!!!".format(tempoAtual))
-    escalonador.att_pronto(emMemoria,lPerifericos)
-    escalonador.retiraPronto(lPerifericos)
+    escalonador.entradaPronto(emMemoria,lPerifericos)
+    escalonador.saidaPronto(lPerifericos)
     reportCpuInicio = ""
     reportCpuFinal = ""
     for cpu in escalonador.cpus:
