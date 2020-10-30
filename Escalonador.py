@@ -1,6 +1,6 @@
 class Escalonador(object):
     def __init__(self, cpus):
-        self.filaPronto = []
+        self.filas = [[],[],[]]
         self.filaSusImpressora = []
         self.filaSusDisco = []
         self.cpus = cpus
@@ -37,21 +37,26 @@ class Escalonador(object):
             if len(self.filaPronto) == 0:
                 return
 
-    def entradaPronto(self, processos, lPerifericos):
+    def entradaPronto(self, processos):
         for p in processos:
-            self.filaPronto.append(p)
-        for i in lPerifericos:
-            if i.disponivel:
-                if i.tipo == "disco":
-                    while len(self.filaSusDisco) != 0:
-                        p = self.filaSusDisco.pop()
-                        self.historicoClock += p.apronta()
-                        self.filaPronto.insert(0, p)
-                elif i.tipo == "impressora":
-                    while len(self.filaSusImpressora) != 0:
-                        p = self.filaSusImpressora.pop()
-                        self.historicoClock += p.apronta()
-                        self.filaPronto.insert(0, p)
+            self.filas[0].append(p)
+
+    def verificaES(self, lPerifericos):
+        nImpressora = 0
+        nDisco = 0
+        for periferico in lPerifericos:
+            if periferico.disponivel:
+                if periferico.tipo == "impressora":
+                    nImpressora +=1
+                else:
+                    nDisco += 1
+        
+        for fila in self.filas:
+            for processo in fila:
+                if processo.estado == "bloqueado" and (processo.nImpressora <= nImpressora and processo.nDisco <= nDisco):
+                    processo.apronta()
+
+
 
     def retiraProcesso(self,memoria, lPerifericos):
         for cpu in self.cpus:
@@ -68,8 +73,11 @@ class Escalonador(object):
                     elif((cpu.processo.tempoProcessado % 2) == 0):
                         self.historicoClock += cpu.processo.apronta()
                         if cpu.processo.tempoProcessado == 2:
-                            cpu.processo.liberaES(cpu.processo.nDisco, "disco",lPerifericos)
-                        self.filaPronto.append(cpu.processo)
+                            cpu.processo.liberaES(cpu.processo.nDisco, "disco",lPerifericos)                        
+                            self.filas[1].append(cpu.processo)
+                        else:
+                            self.filas[2].append(cpu.processo)
+
                         cpu.processo = None
                 else:
                     if(cpu.processo.tempoProcessado == cpu.processo.tempoProcesso):

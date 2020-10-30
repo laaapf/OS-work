@@ -40,6 +40,7 @@ class Computador(object):
             for p in self.lPerifericos:
                 reportPerifericos += str(p)
             self.escalonador.entradaPronto(emMemoria,self.lPerifericos)
+            self.escalonador.verificaES(self.lPerifericos)
             self.escalonador.saidaPronto(self.lPerifericos)
             
 
