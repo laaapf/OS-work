@@ -10,11 +10,11 @@ class Processo(object):
         self.tamanho = tamanho
 
     def __str__(self):
-        if not self.prioridade:
+        if self.prioridade:
            aux = "Com prioridade"
         else:
             aux = "Sem prioridade" 
-        return "\n\tProcesso {}   Estado {}   {}\n\tTamanho do Processo:{}Mbytes\n\tTempo de serviço: {}\n".format(self.nome, self.estado, aux, self.tamanho, self.tempoProcesso)
+        return "\n\tProcesso: {}   Estado: {}   {}\n\tTamanho do Processo:{}Mbytes\n\tTempo de serviço: {}\n\tImpressoras: {}\tDiscos: {}\n".format(self.nome, self.estado, aux, self.tamanho, self.tempoProcesso,self.nImpressora,self.nDisco)
     
     def recursosDisponiveis(self, lPerifericos,):
         impressoras = 0
@@ -59,20 +59,20 @@ class Processo(object):
     def executa(self):
         estadoAntigo = self.estado
         self.estado = "executando"
-        return "\tProcesso {}   Estado {} --> Executando\n".format(self.nome, estadoAntigo)
+        return "\tProcesso: {}   Estado: {} --> Executando\n".format(self.nome, estadoAntigo)
 
         
     def bloqueia(self):
         estadoAntigo = self.estado
         self.estado = "bloqueado"
-        return "\tProcesso {}   Estado {} --> Bloqueado\n".format(self.nome, estadoAntigo)
+        return "\tProcesso: {}   Estado: {} --> Bloqueado\n".format(self.nome, estadoAntigo)
 
     def apronta(self):
         estadoAntigo = self.estado
         self.estado = "pronto"   
-        return "\tProcesso {}   Estado {} --> Pronto\n".format(self.nome, estadoAntigo)
+        return "\tProcesso: {}   Estado: {} --> Pronto\n".format(self.nome, estadoAntigo)
 
     def termina(self):
         estadoAntigo = self.estado
         self.estado = "terminado"   
-        return "\tProcesso {}   Estado {} --> Terminado\n".format(self.nome, estadoAntigo)
+        return "\tProcesso: {}   Estado: {} --> Terminado\n".format(self.nome, estadoAntigo)

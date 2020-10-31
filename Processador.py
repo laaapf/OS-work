@@ -2,6 +2,7 @@
 class Processador:
     def __init__(self):
         self.processo = None
+        self.filaAtendida = None
     
     def __str__(self):
         if(self.processo == None):
