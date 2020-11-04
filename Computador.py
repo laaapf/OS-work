@@ -16,19 +16,26 @@ class Computador(object):
 
         fimFila = False
         vazio = False
+        continuar = False
         while not vazio:
+            if not continuar:
+                x = input("Deseja continuar?")
+                if x == "s":
+                    continuar = True 
             #Seta os reports no inicio do clock
             reportChegada = ""
-            reportPerifericos = ""
+            reportPerifericosInicio = ""
+            reportPerifericosFinal = ""
             reportCpuInicio = ""
             reportCpuFinal = ""
+            reportFilas = ""
 
             #Verifica se ainda irão chegar processos
             if(tempoAtual == len(self.filaChegada)):
                 fimFila = True
 
+            
             emMemoria = []
-            print("########################################## TEMPO {} ##########################################\n".format(tempoAtual))
             #Alocação de memoria
             if(not fimFila and len(self.filaChegada[tempoAtual]) > 0): 
                 for processoChegando in self.filaChegada[tempoAtual]:
@@ -41,26 +48,39 @@ class Computador(object):
                             self.filaChegada.append([])
                         self.filaChegada[tempoAtual+1].insert(0,processoChegando)
 
-                
+            #Registra memoria no inicio do clock    
             reportMemoriaInicio = str(self.memoria)
+            #Registra estado dos perifericos no inicio do clock
             for p in self.lPerifericos:
-                reportPerifericos += str(p)
+                reportPerifericosInicio += str(p)
+            
+            #Bota processos que chegaram na fila 0
             self.escalonador.entradaPronto(emMemoria)
-            print(self.escalonador.filas)
+
+            reportFilas = self.escalonador.printa_filas()
+
+            #Verifica se os perifericos foram liberados
             self.escalonador.verificaES(self.lPerifericos)
 
+            #Trata a saida do processo da fila de prontos para o processador
             for n in range(len(self.escalonador.filas)):
                 self.escalonador.saidaPronto(n ,self.lPerifericos)
             
-
-
+            #Trata o processo dentro de cada cpu e registra o estado antes e depois do processamento
             for cpu in self.escalonador.cpus:
                 reportCpuInicio += str(cpu)                
                 cpu.processa(self.lPerifericos)
                 reportCpuFinal += str(cpu)
+
+            #Registra estado dos perifericos no fim do clock
+            for p in self.lPerifericos:
+                reportPerifericosFinal += str(p)
             
+            #Remove os processos da memoria
             self.escalonador.retiraProcesso(self.memoria, self.lPerifericos)
             
+            #Printa o clock
+            print("########################################## TEMPO {} ##########################################\n".format(tempoAtual))
             if reportChegada != "":
                 print("-----------------------------------Novos Processos-----------------------------------")
                 print(reportChegada)
@@ -68,19 +88,25 @@ class Computador(object):
             else:
                 print("-----------------------------------Não chegaram novos processos-----------------------------------")
             print("\nInicio do clock:")
-            print("\tProcessadores:{}\n\n\tMemoria:{}\n".format(reportCpuInicio, reportMemoriaInicio))
+            print(reportFilas)
+            print("\tPerifericos: {}\n".format(reportPerifericosInicio))
+            print("\tProcessadores: {}\n".format(reportCpuInicio))
+            print("\tMemoria: {}\n".format(reportMemoriaInicio))
             if self.escalonador.historicoClock != "":
                 print("Mudanças de estado:")
-                print("{}".format(self.escalonador.historicoClock))
-            print("Perifericos:")
-            print("{}\n".format(reportPerifericos))
-            print(self.escalonador.filas)
+                print(self.escalonador.historicoClock)
             print("Fim do clock:")
-            print("\tProcessadores:{}\n\n\tMemoria:{}".format(reportCpuFinal, self.memoria))
+            print(self.escalonador.printa_filas())
+            print("\tPerifericos: {}\n".format(reportPerifericosFinal))
+            print("\tProcessadores: {}\n".format(reportCpuFinal))
+            print("\tMemoria: {}\n".format(self.memoria))
             print()
             tempoAtual += 1
 
+            #Reseta o historico de mudança dos processos
             self.escalonador.historicoClock = ""
+
+            #Verifica se a fila acabou
             if fimFila:
                 if(len(self.escalonador.filas[0]) + len(self.escalonador.filas[1]) + len(self.escalonador.filas[2]) != 0 ) : vazio=False
                 else: vazio=True

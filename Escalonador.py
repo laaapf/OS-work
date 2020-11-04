@@ -22,13 +22,13 @@ class Escalonador(object):
                     if rDisp == "semDisco":
                         if  p.tempoProcessado == 0: #envia p fila de bloq disco
                             self.historicoClock += p.bloqueia()
-                            self.filas[fila].append(p)
+                            self.filas[fila].insert(0,p)
                         else:
                             rDisp = "pronto"
                     elif rDisp == "semImpressora":
                         if p.tempoProcesso - p.tempoProcessado <=2:    #envia p fila de bloq impressora
                             self.historicoClock += p.bloqueia()
-                            self.filas[fila].append(p)
+                            self.filas[fila].insert(0,p)
                         else:
                             rDisp = "pronto"
                     if rDisp == "pronto":   #envia ao processador
@@ -36,6 +36,8 @@ class Escalonador(object):
                         self.historicoClock += p.executa()
                         cpu.processo = p
                         cpu.filaAtendida = n
+                else:
+                    self.filas[n].insert(0,p)
             else:
                 cpu.processo = p
                 cpu.filaAtendida = n
@@ -60,11 +62,12 @@ class Escalonador(object):
         for fila in self.filas:
             for processo in fila:
                 if processo.estado == "bloqueado" and (processo.nImpressora <= nImpressora and processo.nDisco <= nDisco):
-                    processo.apronta()
+                     self.historicoClock += processo.apronta()
 
 
 
     def retiraProcesso(self,memoria, lPerifericos):
+        ss = 0
         for cpu in self.cpus:
             if(cpu.processo != None):
                 if(cpu.processo.prioridade == False):
@@ -82,9 +85,9 @@ class Escalonador(object):
                         if cpu.processo.tempoProcessado == 2:
                             cpu.processo.liberaES(cpu.processo.nDisco, "disco",lPerifericos)
                         if cpu.filaAtendida < 2:                       
-                            self.filas[cpu.filaAtendida+1].append(cpu.processo)
+                            self.filas[cpu.filaAtendida+1].insert(0,cpu.processo)
                         else:
-                            self.filas[cpu.filaAtendida].append(cpu.processo)
+                            self.filas[cpu.filaAtendida].insert(0,cpu.processo)
                         cpu.filaAtendida = None
                         cpu.processo = None
                 else:
@@ -93,3 +96,12 @@ class Escalonador(object):
                         self.historicoClock += cpu.processo.termina()
                         cpu.processo = None
                         cpu.filaAtendida = None
+
+    def printa_filas(self):
+        resp = ""
+        for i in range(len(self.filas)):
+            aux = "\tfila {}: ".format(i)
+            for j in range(len(self.filas[i])-1, -1,-1):
+                aux += "{} ".format(self.filas[i][j].nome)
+            resp = resp + aux + "\n"
+        return resp

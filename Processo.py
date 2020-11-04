@@ -33,27 +33,23 @@ class Processo(object):
                 return "pronto"
 
     def reservaES(self,lPerifericos):
-        if self.tempoProcesso - self.tempoProcessado <=2:
-            i = self.nImpressora
-            while (i > 0) :
-                for periferico in lPerifericos:
-                    if(periferico.tipo == "impressora" and periferico.disponivel):
-                        periferico.disponivel = False
-                        i-=1
-        if  self.tempoProcessado == 0:    
-            i = self.nDisco
-            while (i > 0) :
-                for periferico in lPerifericos:
-                    if(periferico.tipo == "disco" and periferico.disponivel):
-                        periferico.disponivel = False
-                        i-=1
-
+        i = self.nImpressora
+        d = self.nDisco
+        for periferico in lPerifericos:
+            if (self.tempoProcesso - self.tempoProcessado <=2) and i > 0:
+                if(periferico.tipo == "impressora" and periferico.disponivel):
+                    periferico.disponivel = False
+                    i-=1
+            if self.tempoProcessado == 0 and d > 0:    
+                if(periferico.tipo == "disco" and periferico.disponivel):
+                    periferico.disponivel = False
+                    d-=1
+    
     def liberaES(self,n,tipo,lPerifericos):
-        while (n > 0) :
-            for periferico in lPerifericos:
-                if(periferico.tipo == tipo and not periferico.disponivel):
-                    periferico.disponivel = True
-                    n-=1
+        for periferico in lPerifericos:
+            if n >0 and (periferico.tipo == tipo and not periferico.disponivel):
+                periferico.disponivel = True
+                n-=1
             
 
     def executa(self):
