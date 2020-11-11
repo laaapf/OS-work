@@ -9,5 +9,5 @@ class Periferico(object):
             aux = "Disponivel"
         else:
             aux = "Em uso"
-        return "\t{} {}({})".format(self.tipo.title(), self.nome, aux)
+        return "\t| {} {}({}) |".format(self.tipo.title(), self.nome, aux)
 

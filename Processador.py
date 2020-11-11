@@ -6,9 +6,9 @@ class Processador:
     
     def __str__(self):
         if(self.processo == None):
-            return "Cpu Ociosa\t"
+            return "| Cpu Ociosa |\t"
         else:
-            return "{}  Executado:{}/{}\t".format(self.processo.nome,self.processo.tempoProcessado, self.processo.tempoProcesso)
+            return "| {}: Executado:{}/{} |\t".format(self.processo.nome,self.processo.tempoProcessado, self.processo.tempoProcesso)
 
     def processa(self,lPerifericos):
         if(self.processo == None):

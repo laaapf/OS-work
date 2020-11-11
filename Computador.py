@@ -87,15 +87,15 @@ class Computador(object):
                 print("-------------------------------------------------------------------------------------")
             else:
                 print("-----------------------------------Não chegaram novos processos-----------------------------------")
-            print("\nInicio do clock:")
+            print("\n>>>> Inicio do clock:\n")
             print(reportFilas)
             print("\tPerifericos: {}\n".format(reportPerifericosInicio))
             print("\tProcessadores: {}\n".format(reportCpuInicio))
             print("\tMemoria: {}\n".format(reportMemoriaInicio))
             if self.escalonador.historicoClock != "":
-                print("Mudanças de estado:")
+                print(">>> Mudanças de estado:")
                 print(self.escalonador.historicoClock)
-            print("Fim do clock:")
+            print(">>> Fim do clock:\n")
             print(self.escalonador.printa_filas())
             print("\tPerifericos: {}\n".format(reportPerifericosFinal))
             print("\tProcessadores: {}\n".format(reportCpuFinal))
