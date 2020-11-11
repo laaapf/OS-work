@@ -28,22 +28,48 @@ class Memoria:
                         return True
                 pos += 1
             self.garbageCollector()
-            self.listaDeBlocos.append(BlocoDeMemoria(processo.tamanho, processo, False))
-            return True
+            
+            return self.firstFit(processo)
         else:
             return False
 
     def garbageCollector(self):
         aux = self.listaDeBlocos.copy()
+        tamRemovido = 0
         for b in aux:
             if(b.livre):
+                tamRemovido += b.tamanho
                 self.listaDeBlocos.remove(b)
+
         self.atualizaAlocacao()
+        if tamRemovido>0:
+            self.listaDeBlocos.append(BlocoDeMemoria(tamRemovido, None,True))
         
-    def liberaBloco(self,processo):
-        for bloco in self.listaDeBlocos:
-            if(bloco.processo == processo):
-                bloco.livre = True
+    def liberaBloco(self,processo): 
+        for i in range(len(self.listaDeBlocos)):
+            if(self.listaDeBlocos[i].processo == processo):
+                if i == len(self.listaDeBlocos):
+                    self.listaDeBlocos[i].livre = True
+                    if self.listaDeBlocos[i-1].livre:
+                        self.listaDeBlocos[i].tamanho += self.listaDeBlocos[i-1].tamanho
+                        self.listaDeBlocos.remove(self.listaDeBlocos[i-1])
+                    break                 
+                elif i != 0:
+                    self.listaDeBlocos[i].livre = True
+                    if self.listaDeBlocos[i-1].livre:
+                        self.listaDeBlocos[i].tamanho += self.listaDeBlocos[i-1].tamanho
+                        self.listaDeBlocos.remove(self.listaDeBlocos[i-1])
+                        i-=1
+                    if self.listaDeBlocos[i+1].livre:
+                        self.listaDeBlocos[i].tamanho += self.listaDeBlocos[i+1].tamanho
+                        self.listaDeBlocos.remove(self.listaDeBlocos[i+1])
+                    break
+                else:
+                    self.listaDeBlocos[i].livre = True
+                    if self.listaDeBlocos[i+1].livre:
+                        self.listaDeBlocos[i].tamanho += self.listaDeBlocos[i+1].tamanho
+                        self.listaDeBlocos.remove(self.listaDeBlocos[i+1])
+                    break
         self.atualizaAlocacao()
     
 
@@ -56,6 +82,6 @@ class Memoria:
                 resp += " LIVRE - {}MB |".format(i.tamanho)
             else:
                 resp += " {} - {}MB |".format(i.processo.nome, i.tamanho)
-        if esp < self.tamanhoMaximo:
-            resp += " LIVRE - {}MB |".format(self.tamanhoMaximo-esp)
+        # if esp < self.tamanhoMaximo:
+        #     resp += " LIVRE - {}MB |".format(self.tamanhoMaximo-esp)
         return resp 

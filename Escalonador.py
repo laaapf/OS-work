@@ -67,7 +67,6 @@ class Escalonador(object):
 
 
     def retiraProcesso(self,memoria, lPerifericos):
-        ss = 0
         for cpu in self.cpus:
             if(cpu.processo != None):
                 if(cpu.processo.prioridade == False):
